@@ -1,19 +1,51 @@
 class Node:
-    def __init__(self, key, parent):
+    def __init__(self, key, parent=None):
         self.key = key
         self.parent = parent
         self.left = None
         self.right = None
 
 
-def find(root, key):
+def add_barriers(root, barrier):
     if root is None:
-        return None
+        return barrier
+    root.left = add_barriers(root.left, barrier)
+    root.right = add_barriers(root.right, barrier)
+    return root
+
+
+def find_barrier(root, key, chet=0):
     if key < root.key:
-        return root.left
+        chet += 1
+        return find_barrier(root.left, key, chet)
     elif key > root.key:
-        return root.right
+        chet += 2
+        return find_barrier(root.right, key, chet)
     else:
+        chet += 2
+        print("Счетчик = " + str(chet))
+        return root
+
+
+def find_with_barrier(root, key, barrier):
+    barrier.key = key
+    return find_barrier(root, key)
+
+
+def find(root, key, chet=0):
+    if root is None:
+        chet += 1
+        print("Счетчик = " + str(chet))
+        return None
+    elif key < root.key:
+        chet += 2
+        return find(root.left, key, chet)
+    elif key > root.key:
+        chet += 3
+        return find(root.right, key, chet)
+    else:
+        chet += 3
+        print("Счетчик = " + str(chet))
         return root
 
 
@@ -154,19 +186,30 @@ def file(filename):
 
 
 # Пример использования
-# root = klava()
+print("------------------1------------------")
+print("Клавиатура")
+klava()
+print("Файл")
 root = file('tree.txt')
+root2 = file('tree.txt')
+root4 = file('tree.txt')
+
+print("------------------2------------------")
+print("Вместе с барьером:")
+root3 = Node(-1)
+add_barriers(root2, root3)
+print_tree(root2)
+print("---------")
+print_tree(find_with_barrier(root2, 11, root3))
+print("---------")
+print_tree(root2)
+print("Без барьера:")
+print_tree(find(root4, 11))
+print("------------------3------------------")
 add(root, 9)
 add(root, 8)
 add(root, 11)
 print_tree(root)
+print("------------------4------------------")
 delete(root, 7)
-print("")
-print("")
 print_tree(root)
-
-root2 = find(root, 8)
-print("")
-print(root2.left.key)
-print(root2.right.key)
-print(root2.key)
