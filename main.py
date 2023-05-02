@@ -124,7 +124,7 @@ def print_tree(root, level=0):
         print_tree(root.left, level+1)
 
 
-def klava():
+def klaviature():
     # Ввод данных с клавиатуры
     elements = []
     n = int(input("Введите количество элементов: "))
@@ -132,18 +132,7 @@ def klava():
     for i in range(n):
         element = int(input("Элемент #{}: ".format(i+1)))
         elements.append(element)
-
-    # Построение двоичного дерева поиска
-    root = build_bst(elements)
-
-    # Вывод элементов в порядке возрастания
-    print("Элементы в порядке возрастания:")
-    print_inorder(root)
-
-    # Вывод дерева
-    print("Дерево:")
-    print_tree(root)
-    return root
+    return build_bst(elements)
 
 
 def read_elements_from_file(filename):
@@ -172,44 +161,33 @@ def build_bst_from_file(filename):
 
 
 def file(filename):
-    # Ввод данных с файла
-    root = build_bst_from_file(filename)
+    return build_bst_from_file(filename)
 
-    # Вывод элементов в порядке возрастания
-    print("Элементы в порядке возрастания:")
-    print_inorder(root)
-    print("")
-    # Вывод дерева
-    print("Дерево:")
-    print_tree(root)
-    return root
-
-
-# Пример использования
-print("------------------1------------------")
-print("Клавиатура")
-klava()
-print("Файл")
-root = file('tree.txt')
-root2 = file('tree.txt')
-root4 = file('tree.txt')
-
-print("------------------2------------------")
-print("Вместе с барьером:")
-root3 = Node(-1)
-add_barriers(root2, root3)
-print_tree(root2)
-print("---------")
-print_tree(find_with_barrier(root2, 11, root3))
-print("---------")
-print_tree(root2)
-print("Без барьера:")
-print_tree(find(root4, 11))
-print("------------------3------------------")
-add(root, 9)
-add(root, 8)
-add(root, 11)
-print_tree(root)
-print("------------------4------------------")
-delete(root, 7)
-print_tree(root)
+is_use_barrier = False
+barrier = Node(-1)
+print("Добро пожаловать в 7 лабу!")
+tree = None
+method = input("Выберите способ заполнения дерева: 1 - с клавиатуры, 2 - из файла.\nСпособ ")
+if method == "1":
+    tree = klaviature()
+elif method == "2":
+    tree = file("tree.txt")
+while("Кирилл - хороший парень" == "Кирилл - хороший парень"):
+    choice = input("Выберете действие:\n1 - вывод дерева на экран\n2 - найти элемент\n3 - добавить элемент\n4 - удалить элемент\n5 - выход\nДействие ")
+    if choice == "1":
+        print_tree(tree)
+    elif choice == "2":
+        use_barrier_or_not = input("Будете ли использовать барьер для поиска? Да/Нет Выбирайте с умом. Если вы выберете с барьером - то вы потеряете дерево...\n")
+        if use_barrier_or_not == "Да":
+            if not is_use_barrier:
+                is_use_barrier = True
+                tree = add_barriers(tree, barrier)
+            print_tree(find_with_barrier(tree, int(input("Элемент ")), barrier))
+        else:
+            print_tree(find(tree, int(input("Элемент "))))
+    elif choice == "3":
+        tree = add(tree, int(input("Элемент ")))
+    elif choice == "4":
+        tree = delete(tree, int(input("Элемент ")))
+    else:
+        break
