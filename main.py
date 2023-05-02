@@ -6,32 +6,6 @@ class Node:
         self.right = None
 
 
-def add_barriers(root, barrier):
-    if root is None:
-        return barrier
-    root.left = add_barriers(root.left, barrier)
-    root.right = add_barriers(root.right, barrier)
-    return root
-
-
-def find_barrier(root, key, chet=0):
-    if key < root.key:
-        chet += 1
-        return find_barrier(root.left, key, chet)
-    elif key > root.key:
-        chet += 2
-        return find_barrier(root.right, key, chet)
-    else:
-        chet += 2
-        print("Счетчик = " + str(chet))
-        return root
-
-
-def find_with_barrier(root, key, barrier):
-    barrier.key = key
-    return find_barrier(root, key)
-
-
 def find(root, key, chet=0):
     if root is None:
         chet += 1
@@ -163,9 +137,7 @@ def build_bst_from_file(filename):
 def file(filename):
     return build_bst_from_file(filename)
 
-is_use_barrier = False
-barrier = Node(-1)
-print("Добро пожаловать в 7 лабу!")
+
 tree = None
 method = input("Выберите способ заполнения дерева: 1 - с клавиатуры, 2 - из файла.\nСпособ ")
 if method == "1":
@@ -177,14 +149,9 @@ while(1 == 1):
     if choice == "1":
         print_tree(tree)
     elif choice == "2":
-        use_barrier_or_not = input("Будете ли использовать барьер для поиска? Да/Нет Выбирайте с умом. Если вы выберете с барьером - то вы потеряете дерево...\n")
-        if use_barrier_or_not == "Да":
-            if not is_use_barrier:
-                is_use_barrier = True
-                tree = add_barriers(tree, barrier)
-            print_tree(find_with_barrier(tree, int(input("Элемент ")), barrier))
-        else:
-            print_tree(find(tree, int(input("Элемент "))))
+        find_tree = find(tree, int(input("Элемент ")))
+        print("Вывод поддерева с искомым корнем:")
+        print_tree(find_tree)
     elif choice == "3":
         tree = add(tree, int(input("Элемент ")))
     elif choice == "4":
