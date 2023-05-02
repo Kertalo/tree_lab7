@@ -172,7 +172,7 @@ if method == "1":
     tree = klaviature()
 elif method == "2":
     tree = file("tree.txt")
-while("Кирилл - хороший парень" == "Кирилл - хороший парень"):
+while(1 == 1):
     choice = input("Выберете действие:\n1 - вывод дерева на экран\n2 - найти элемент\n3 - добавить элемент\n4 - удалить элемент\n5 - выход\nДействие ")
     if choice == "1":
         print_tree(tree)
